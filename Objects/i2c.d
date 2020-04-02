@@ -1,0 +1,11 @@
+.\objects\i2c.o: hw\src\i2c.c
+.\objects\i2c.o: .\CMSIS\Device\ST\STM32L0xx\Include\stm32l053xx.h
+.\objects\i2c.o: .\CMSIS\Include\core_cm0plus.h
+.\objects\i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\i2c.o: .\CMSIS\Include\core_cmInstr.h
+.\objects\i2c.o: .\CMSIS\Include\core_cmFunc.h
+.\objects\i2c.o: .\CMSIS\Device\ST\STM32L0xx\Include\system_stm32l0xx.h
+.\objects\i2c.o: .\hw\inc\I2C.h
+.\objects\i2c.o: .\hw\inc\interrupt.h
+.\objects\i2c.o: .\hw\inc\systick.h
+.\objects\i2c.o: .\hw\inc\nxp_lcd_driver.h

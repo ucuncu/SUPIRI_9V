@@ -1,0 +1,10 @@
+.\objects\lcd.o: hw\src\lcd.c
+.\objects\lcd.o: .\hw\inc\lcd.h
+.\objects\lcd.o: .\CMSIS\Device\ST\STM32L0xx\Include\stm32l0xx.h
+.\objects\lcd.o: .\CMSIS\Device\ST\STM32L0xx\Include\stm32l053xx.h
+.\objects\lcd.o: .\CMSIS\Include\core_cm0plus.h
+.\objects\lcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\lcd.o: .\CMSIS\Include\core_cmInstr.h
+.\objects\lcd.o: .\CMSIS\Include\core_cmFunc.h
+.\objects\lcd.o: .\CMSIS\Device\ST\STM32L0xx\Include\system_stm32l0xx.h
+.\objects\lcd.o: .\hw\inc\gpio.h

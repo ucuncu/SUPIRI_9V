@@ -1,0 +1,14 @@
+.\objects\eeprom.o: eeprom.c
+.\objects\eeprom.o: .\CMSIS\Device\ST\STM32L0xx\Include\stm32l0xx.h
+.\objects\eeprom.o: .\CMSIS\Device\ST\STM32L0xx\Include\stm32l053xx.h
+.\objects\eeprom.o: .\CMSIS\Include\core_cm0plus.h
+.\objects\eeprom.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\eeprom.o: .\CMSIS\Include\core_cmInstr.h
+.\objects\eeprom.o: .\CMSIS\Include\core_cmFunc.h
+.\objects\eeprom.o: .\CMSIS\Device\ST\STM32L0xx\Include\system_stm32l0xx.h
+.\objects\eeprom.o: stm32l0_eeprom.h
+.\objects\eeprom.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\eeprom.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\eeprom.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\eeprom.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\eeprom.o: eeprom.h

@@ -1,0 +1,10 @@
+.\objects\gpio.o: hw\src\gpio.c
+.\objects\gpio.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\assert.h
+.\objects\gpio.o: .\hw\inc\gpio.h
+.\objects\gpio.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\gpio.o: .\CMSIS\Device\ST\STM32L0xx\Include\stm32l0xx.h
+.\objects\gpio.o: .\CMSIS\Device\ST\STM32L0xx\Include\stm32l053xx.h
+.\objects\gpio.o: .\CMSIS\Include\core_cm0plus.h
+.\objects\gpio.o: .\CMSIS\Include\core_cmInstr.h
+.\objects\gpio.o: .\CMSIS\Include\core_cmFunc.h
+.\objects\gpio.o: .\CMSIS\Device\ST\STM32L0xx\Include\system_stm32l0xx.h
