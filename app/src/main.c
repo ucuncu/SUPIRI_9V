@@ -677,10 +677,10 @@ float Voltage_Conversion(int ADC_Reading){
 	
 	/* Calculate Voltage */
 	voltage = ADC_Reading*voltage_Per_Division;
-	if(voltage < 6)
-	{
-		voltage = 6;
-	}
+//	if(voltage < 6)
+//	{
+//		voltage = 6;
+//	}
 	return(voltage);
 }
 

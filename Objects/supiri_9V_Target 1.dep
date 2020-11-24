@@ -1,5 +1,5 @@
 Dependencies for Project 'supiri_9V', Target 'Target 1': (DO NOT MODIFY !)
-F (.\app\src\main.c)(0x5E47F51C)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I .\CMSIS\Include -I .\config\inc -I .\hw\inc -I ..\SUPIRI-9V -I .\CMSIS\Device\ST\STM32L0xx\Include-I.\RTE\_Target_1-IC:\Users\Hamit\AppData\Local\Arm\Packs\Keil\STM32L0xx_DFP\2.0.1\Drivers\CMSIS\Device\ST\STM32L0xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32L053xx-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\app\src\main.c)(0x5F69E209)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I .\CMSIS\Include -I .\config\inc -I .\hw\inc -I ..\SUPIRI-9V -I .\CMSIS\Device\ST\STM32L0xx\Include-I.\RTE\_Target_1-IC:\Users\Hamit\AppData\Local\Arm\Packs\Keil\STM32L0xx_DFP\2.0.1\Drivers\CMSIS\Device\ST\STM32L0xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32L053xx-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (.\CMSIS\Device\ST\STM32L0xx\Include\stm32l0xx.h)(0x5DD7193F)
 I (.\CMSIS\Device\ST\STM32L0xx\Include\stm32l053xx.h)(0x5E24F5F1)
 I (.\CMSIS\Include\core_cm0plus.h)(0x56D1819E)
@@ -45,7 +45,7 @@ I (.\CMSIS\Include\core_cm0plus.h)(0x56D1819E)
 I (.\CMSIS\Include\core_cmInstr.h)(0x56D1819E)
 I (.\CMSIS\Include\core_cmFunc.h)(0x56D1819E)
 I (.\CMSIS\Device\ST\STM32L0xx\Include\system_stm32l0xx.h)(0x5E00A1F1)
-F (.\hw\src\hw.c)(0x5E2655B6)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I .\CMSIS\Include -I .\config\inc -I .\hw\inc -I ..\SUPIRI-9V -I .\CMSIS\Device\ST\STM32L0xx\Include-I.\RTE\_Target_1-IC:\Users\Hamit\AppData\Local\Arm\Packs\Keil\STM32L0xx_DFP\2.0.1\Drivers\CMSIS\Device\ST\STM32L0xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32L053xx-o .\objects\hw.o --omf_browse .\objects\hw.crf --depend .\objects\hw.d)
+F (.\hw\src\hw.c)(0x5F6F4CA2)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I .\CMSIS\Include -I .\config\inc -I .\hw\inc -I ..\SUPIRI-9V -I .\CMSIS\Device\ST\STM32L0xx\Include-I.\RTE\_Target_1-IC:\Users\Hamit\AppData\Local\Arm\Packs\Keil\STM32L0xx_DFP\2.0.1\Drivers\CMSIS\Device\ST\STM32L0xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32L053xx-o .\objects\hw.o --omf_browse .\objects\hw.crf --depend .\objects\hw.d)
 I (.\CMSIS\Device\ST\STM32L0xx\Include\stm32l0xx.h)(0x5DD7193F)
 I (.\CMSIS\Device\ST\STM32L0xx\Include\stm32l053xx.h)(0x5E24F5F1)
 I (.\CMSIS\Include\core_cm0plus.h)(0x56D1819E)
@@ -79,7 +79,7 @@ I (.\hw\inc\rtc.h)(0x5E1E8847)
 I (.\hw\inc\hw.h)(0x5E009687)
 I (.\hw\inc\selenoid.h)(0x5DEAE03E)
 I (.\hw\inc\nxp_lcd_driver.h)(0x5E348DEF)
-F (.\hw\src\systick.c)(0x5E348E2B)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I .\CMSIS\Include -I .\config\inc -I .\hw\inc -I ..\SUPIRI-9V -I .\CMSIS\Device\ST\STM32L0xx\Include-I.\RTE\_Target_1-IC:\Users\Hamit\AppData\Local\Arm\Packs\Keil\STM32L0xx_DFP\2.0.1\Drivers\CMSIS\Device\ST\STM32L0xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32L053xx-o .\objects\systick.o --omf_browse .\objects\systick.crf --depend .\objects\systick.d)
+F (.\hw\src\systick.c)(0x5E851709)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I .\CMSIS\Include -I .\config\inc -I .\hw\inc -I ..\SUPIRI-9V -I .\CMSIS\Device\ST\STM32L0xx\Include-I.\RTE\_Target_1-IC:\Users\Hamit\AppData\Local\Arm\Packs\Keil\STM32L0xx_DFP\2.0.1\Drivers\CMSIS\Device\ST\STM32L0xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32L053xx-o .\objects\systick.o --omf_browse .\objects\systick.crf --depend .\objects\systick.d)
 I (.\CMSIS\Device\ST\STM32L0xx\Include\stm32l0xx.h)(0x5DD7193F)
 I (.\CMSIS\Device\ST\STM32L0xx\Include\stm32l053xx.h)(0x5E24F5F1)
 I (.\CMSIS\Include\core_cm0plus.h)(0x56D1819E)
@@ -108,7 +108,7 @@ I (.\hw\inc\btn.h)(0x5E09C1B4)
 I (.\hw\inc\gpio.h)(0x5DE15342)
 I (.\hw\inc\adc.h)(0x5DDDB842)
 I (.\hw\inc\nxp_lcd_driver.h)(0x5E348DEF)
-F (.\hw\src\rtc.c)(0x5E47F70D)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I .\CMSIS\Include -I .\config\inc -I .\hw\inc -I ..\SUPIRI-9V -I .\CMSIS\Device\ST\STM32L0xx\Include-I.\RTE\_Target_1-IC:\Users\Hamit\AppData\Local\Arm\Packs\Keil\STM32L0xx_DFP\2.0.1\Drivers\CMSIS\Device\ST\STM32L0xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32L053xx-o .\objects\rtc.o --omf_browse .\objects\rtc.crf --depend .\objects\rtc.d)
+F (.\hw\src\rtc.c)(0x5F476202)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I .\CMSIS\Include -I .\config\inc -I .\hw\inc -I ..\SUPIRI-9V -I .\CMSIS\Device\ST\STM32L0xx\Include-I.\RTE\_Target_1-IC:\Users\Hamit\AppData\Local\Arm\Packs\Keil\STM32L0xx_DFP\2.0.1\Drivers\CMSIS\Device\ST\STM32L0xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32L053xx-o .\objects\rtc.o --omf_browse .\objects\rtc.crf --depend .\objects\rtc.d)
 I (.\CMSIS\Device\ST\STM32L0xx\Include\stm32l0xx.h)(0x5DD7193F)
 I (.\CMSIS\Device\ST\STM32L0xx\Include\stm32l053xx.h)(0x5E24F5F1)
 I (.\CMSIS\Include\core_cm0plus.h)(0x56D1819E)

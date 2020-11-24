@@ -186,6 +186,7 @@ void hw_init(void) {
 	//	
 	adc_sens_read_disable();
 	adc_bat_read_enable();
+	
 }
 
 
