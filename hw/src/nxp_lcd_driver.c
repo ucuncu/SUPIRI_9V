@@ -184,8 +184,8 @@
 
 
 
-	uint8_t factoryReseyKEY[10] = {1,0,0,0,0,0,0,0,0,1};
-	uint8_t factoryPASSWORD[10] = {0,0,0,0,0,0,0,0,0,0};
+	uint8_t factoryReseyKEY[10] = {7,8,5,8,2,4,9,6,1,4};    //  FACTORY RESET KEY   /// SUPIRI KEY
+	uint8_t factoryPASSWORD[10] = {0,0,0,0,0,0,0,0,0,0};		// DEFAULT KEY
 	
 	//CELENDER VALUES						//Relat_1_Start_Date_Time_1, Relat_1_Stop_Date_Time_2,...Relat_4_Start_Date_Time_3, Relat_4_Stop_Date_Time_3
 	uint32_t relayCelendar[32] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -818,10 +818,16 @@ void updateLCDBuffer(void)
 			//					
 			if(fShowBatteryLevel)
 			{		
-				tmpBatLevel = batteryVoltage-6;
-				tmpBatLevel = tmpBatLevel/3;
-				tmpBatLevel = tmpBatLevel * 100;
-				tmpBatLevelInt = ceil(tmpBatLevel);
+				tmpBatLevel = batteryVoltage-6.8;   // 6.8 röleleri çekecegi son voltaj, burayi sifir noktasi aldik
+				tmpBatLevel = tmpBatLevel/2.2;			// 9 Volt Tam dolu, 9-6.8 = 2.2 çalisma araligi
+				tmpBatLevel = tmpBatLevel * 20;			//
+				tmpBatLevelInt = ceil(tmpBatLevel);	//  Pil gösterimi yüzde 5 ve katlari olsun, diger türlü çok oynama oluyor
+				tmpBatLevelInt = tmpBatLevelInt * 5;	//
+				if(tmpBatLevelInt > 99)
+				{
+					tmpBatLevelInt = 0;
+				}
+				
 				tmpBatLevelInt = bcd2cnv(tmpBatLevelInt);
 				tmpBatLevelInt_LSB = tmpBatLevelInt&0x0000000F;
 				tmpBatLevelInt_MSB = (tmpBatLevelInt&0x000000F0)>>4;
@@ -2344,19 +2350,19 @@ void updateLCDBuffer(void)
 		 
 			LCD_Ram_Data_Row[9] = LCD_Ram_Data_Row[9] | 0x04;  //BAT0 always on
 		 
-		 if(batteryVoltage > 8.4)
+		 if(batteryVoltage > 8.56)
 		 {
 			 LCD_Ram_Data_Row[9] = LCD_Ram_Data_Row[9] | 0x02;  //BAT1 on
 		 }
-		 if(batteryVoltage > 7.8)
+		 if(batteryVoltage > 8.12)
 		 {
 			 LCD_Ram_Data_Row[9] = LCD_Ram_Data_Row[9] | 0x01;  //BAT2 on
 		 }	
-		 if(batteryVoltage > 7.2)
+		 if(batteryVoltage > 7.68)
 		 {
 			 LCD_Ram_Data_Row[9] = LCD_Ram_Data_Row[9] | 0x20;  //BAT3 on
 		 }
-		 if(batteryVoltage > 6.6)
+		 if(batteryVoltage > 7.24)
 		 {
 			 LCD_Ram_Data_Row[9] = LCD_Ram_Data_Row[9] | 0x10;  //BAT4 on
 		 }	

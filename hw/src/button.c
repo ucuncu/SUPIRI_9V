@@ -10,7 +10,6 @@
  *              .
  *
  ******************************************************************************/
-
 /****** Header-Files **********************************************************/
 #include "button.h"
 #include "gpio.h"
@@ -22,6 +21,8 @@
 #include "math.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+
 
 unsigned char butdat = 0xFF;	// Button data
 unsigned char prvdat = 0;			// Previous button data
@@ -491,7 +492,7 @@ void selectedSelenoidUpdate(uint8_t option)
 	if(option) // + button pressed
 	{
 		++selectedSelenoid;
-		if(selectedSelenoid == 5)
+		if(selectedSelenoid == SELENOID_NUMBER + 1)
 		{
 			selectedSelenoid = 1;
 		}
@@ -500,7 +501,7 @@ void selectedSelenoidUpdate(uint8_t option)
 	{
 		if(selectedSelenoid == 1)
 		{
-			selectedSelenoid = 4;
+			selectedSelenoid = SELENOID_NUMBER;
 		}
 		else
 		{
@@ -1291,8 +1292,16 @@ void ibprs( void )
 			if((!fStartManuelWork)&&(!fStartAllRelayManuelWork))
 			{
 				fActivateManuelMode = 0;	
-				fManuelRelayAdjust = 1;			
-				fAll_Her_Selected = 1;
+				fManuelRelayAdjust = 1;	
+				if(SELENOID_NUMBER > 1)
+				{
+					fAll_Her_Selected = 1;
+				}
+				else
+				{
+					selectedSelenoidUpdate(1);   // SELENOD 1 ise zaten 1 döner
+				}
+					
 			}
 		}
 		else if(fManuelRelayAdjust)
@@ -1303,7 +1312,7 @@ void ibprs( void )
 			}
 			else
 			{
-				if(selectedSelenoid == 4)
+				if((selectedSelenoid == SELENOID_NUMBER) && (SELENOID_NUMBER > 1))
 				{
 					fAll_Her_Selected = 1;
 				}
@@ -1599,7 +1608,7 @@ void dbprs( void )
 			}
 			else
 			{
-				if(selectedSelenoid == 1)
+				if((selectedSelenoid == 1) && (SELENOID_NUMBER > 1))
 				{
 					fAll_Her_Selected = 1;
 				}
@@ -1932,7 +1941,7 @@ void forwardbprs( void )
 		}		
 		else if(fHergunSelected)
 		{
-			if(selectedSelenoid == 4)
+			if(selectedSelenoid == SELENOID_NUMBER)
 			{
 				fHergunSelected = 0;
 				fselectedSelenoidAdjust = 0;
@@ -2466,7 +2475,7 @@ void incAndBckLPrs(void)
 {
 	anyButtonPressed();
 	
-	if(fselenoidProgramming & fselectedSelenoidAdjust & (selectedSelenoid == 2))
+	if(fselenoidProgramming & fselectedSelenoidAdjust & (selectedSelenoid == 2) & (SELENOID_NUMBER == 4))
 	{
 		fcopyAndPasteSelSettings= 1;
 		fRecordtoEEPROM = 1;

@@ -9,3 +9,4 @@
 .\objects\systick.o: .\hw\inc\systick.h
 .\objects\systick.o: .\hw\inc\nxp_lcd_driver.h
 .\objects\systick.o: .\hw\inc\selenoid.h
+.\objects\systick.o: .\hw\inc\button.h

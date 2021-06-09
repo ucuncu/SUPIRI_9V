@@ -1,0 +1,20 @@
+--cpu Cortex-M0+
+".\objects\main.o"
+".\objects\btn.o"
+".\objects\gpio.o"
+".\objects\hw.o"
+".\objects\interrupt.o"
+".\objects\systick.o"
+".\objects\adc.o"
+".\objects\rtc.o"
+".\objects\selenoid.o"
+".\objects\button.o"
+".\objects\i2c.o"
+".\objects\nxp_lcd_driver.o"
+".\objects\led.o"
+".\objects\startup_stm32l053xx.o"
+".\objects\system_stm32l0xx.o"
+--strict --scatter ".\Objects\supiri_9V_4RELAY.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\supiri_9V_4RELAY.map" -o .\Objects\supiri_9V_4RELAY.axf

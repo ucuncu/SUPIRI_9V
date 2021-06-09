@@ -302,7 +302,7 @@ int main(void)
 		if(f200ms)
 		{
 			f200ms = 0;	
-			if((!afterWakeUpCnt) & (!powerON) & (!fSystemOFF))
+			if((!afterWakeUpCnt) && (!powerON) && (!fSystemOFF))
 			{
 				batteryVoltageCon();
 			}	
@@ -372,7 +372,7 @@ void batteryVoltageCon(void)
 		readBatteryVoltage = Voltage_Conversion(adcSensReading);
 		batteryVoltageSample[batteryRecordCnt] = readBatteryVoltage;
 		++batteryRecordCnt;
-		if(batteryRecordCnt == 10)
+		if(batteryRecordCnt >= 10)
 		{
 			fBatteryReady = 1;
 			batteryRecordCnt = 0;
@@ -381,16 +381,19 @@ void batteryVoltageCon(void)
 			{
 				batteryVoltage = batteryVoltage + batteryVoltageSample[i]/10;
 			}
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				batteryVoltage = batteryVoltage + 1.482;  // For Calibration!!! Calibration factor eklenecek
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		}
+
 		if (batteryVoltage > 9)
 		{
 			batteryVoltage = 9;
 		}
-		if (batteryVoltage < 6.1)
-		{
-			batteryVoltage = 6.4;  // ADC Hatali demekki
-		}
-		else if (batteryVoltage < 6.3)  // 6.1<batvoltaj<6.3 iken röleleri kapatmaya basla
+		
+		if (batteryVoltage < 6.8)  // batvoltaj<6.8 röleleri kapat, pil bitiyor
 		{
 			LCDPowerOFF();
 			fCloseRelay1 = 1;
@@ -437,8 +440,8 @@ void sleepCon(void)
 		//
 		myWatchDogCnt = 0;  // Refresh whatchdog counter
 		//
-		//PWR->CR &= ~PWR_CR_DBP;
-		//PWR->CR |= PWR_CR_DSEEKOFF;
+		//PWR->CR &= ~PWR_CR_DBP;		//orj comment
+		//PWR->CR |= PWR_CR_DSEEKOFF;		//orj comment
 		
 		//
 		RCC->APB1ENR &= ~RCC_APB1ENR_I2C1EN;
@@ -453,10 +456,10 @@ void sleepCon(void)
 		RCC->APB2SMENR &= ~RCC_APB2SMENR_SYSCFGSMEN; /* (1) */
 		RCC->APB2SMENR &= ~RCC_APB2SMENR_TIM21SMEN; /* (1) */
 		RCC->APB2SMENR &= ~RCC_APB2SMENR_TIM22SMEN; /* (1) */
-		RCC->APB2SMENR &= ~RCC_APB2SMENR_ADC1SMEN; /* (1) */
+		//RCC->APB2SMENR &= ~RCC_APB2SMENR_ADC1SMEN; /* (1) */
 		RCC->APB2SMENR &= ~RCC_APB2SMENR_SPI1SMEN; /* (1) */
 		RCC->APB2SMENR &= ~RCC_APB2SMENR_USART1SMEN; /* (1) */
-		//RCC->APB2SMENR &= ~RCC_APB2SMENR_DBGMCUSMEN; /* (1) */
+		//RCC->APB2SMENR &= ~RCC_APB2SMENR_DBGMCUSMEN; /* (1) */   // orj comment
 		//
 //		// Mantiksiz
 		RCC->APB2ENR |= RCC_APB2ENR_DBGMCUEN;
@@ -551,6 +554,8 @@ void sleepCon(void)
 
 void wakeUp(void)
 {
+		SystemInit();
+
 		hw_initSysclock();    // bunlar kaldirildiktan sonra güç tüketimi ölçülmedi
 		asm("nop");
 		asm("nop");   
@@ -582,11 +587,30 @@ void wakeUp(void)
 		asm("nop");
 		asm("nop");	;
 		///wait a little for clock stabilation
-		for(long int k=0; k<10000;k++);
+		for(long int k=0; k<50000;k++);
 		////
+		asm("nop");
+		asm("nop");   
+		asm("nop");	
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");   
+		asm("nop");
+		asm("nop");
+		hw_init();
+		asm("nop");
+		asm("nop");   
+		asm("nop");	
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");   
+		asm("nop");
+		asm("nop");
 		myWatchDogCnt = 0;  // Refresh whatchdog counter
 		afterWakeUpCnt = 10000; // uyandiktan sonra hemen pil kontrolüne baslamasin, 10 sn ye sonra, stabilizasyon için
-	  PWR->CR &= ~PWR_CR_ULP;   // V_{REFINT} is on
+	  //PWR->CR &= ~PWR_CR_ULP;   // V_{REFINT} is on
 		PWR->CR &= ~PWR_CR_FWU;  // disable fast wake up
 		//PWR->CR &= ~PWR_CR_LPSDSR; // *!< Low-power deepsleep/sleep/ Internal Regulator Off*/  
 		//RCC->IOPSMENR |= RCC_AHBENR_MIFEN; /* (1) */		
@@ -599,16 +623,7 @@ void wakeUp(void)
 		asm("nop");	
 		LCDBufferReset();		
 		LCDPowerON();	   // LCD Power ON, Wait for stabilization
-		asm("nop");
-		asm("nop");   
-		asm("nop");	
-		asm("nop");
-		asm("nop");
-		asm("nop");
-		asm("nop");   
-		asm("nop");
-		asm("nop");	;
-		hw_init();
+
 		selenoid_init();
 		fsleepEnable = 0;
 		batteryRecordCnt = 0;
@@ -1617,102 +1632,114 @@ void manuelAllWorkCelender(void)
 	tmpMinUnits = (currentTime & RTC_TR_MNU)>>8;
 	tmpSecTens = (currentTime & RTC_TR_ST)>>4;
 	tmpSecUnits =(currentTime & RTC_TR_SU);
-	
-	//röle 1	
-	tmpSec = tmpSecTens *10 + tmpSecUnits + 2; 		// 2 sec delay
-	tmpMin = tmpMinTens * 10 + tmpMinUnits + (tmpSec/60);
-	tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60);
-	tmpSec=tmpSec%60;
-	tmpSec=bcd2cnv(tmpSec);		
-	tmpMin=tmpMin%60;
-	tmpMin=bcd2cnv(tmpMin);
-	tmpHour=tmpHour%24;
-	tmpHour=bcd2cnv(tmpHour);	
-	pendingRtcIrq[24] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // 3 saniye sonrasina kurun
-	pendingRelay[24] = 1;
-	tmpSec = tmpSecTens *10 + tmpSecUnits;
-	tmpMin = tmpMinTens * 10 + tmpMinUnits + workingDelay + (tmpSec/60);
-	tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
-	tmpSec=tmpSec%60;
-	tmpSec=bcd2cnv(tmpSec);	
-	tmpMin=tmpMin%60;
-	tmpMin=bcd2cnv(tmpMin);
-	tmpHour=tmpHour%24;
-	tmpHour=bcd2cnv(tmpHour);
-	pendingRtcIrq[25] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // kapat
-	pendingRelay[25] = 1;
 
+	if( SELENOID_NUMBER  >= 1)    // NUMBERS OF SELENOID  >= 1
+	{
+		//röle 1	
+		tmpSec = tmpSecTens *10 + tmpSecUnits + 2; 		// 2 sec delay
+		tmpMin = tmpMinTens * 10 + tmpMinUnits + (tmpSec/60);
+		tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60);
+		tmpSec=tmpSec%60;
+		tmpSec=bcd2cnv(tmpSec);		
+		tmpMin=tmpMin%60;
+		tmpMin=bcd2cnv(tmpMin);
+		tmpHour=tmpHour%24;
+		tmpHour=bcd2cnv(tmpHour);	
+		pendingRtcIrq[24] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // 3 saniye sonrasina kurun
+		pendingRelay[24] = 1;
+		tmpSec = tmpSecTens *10 + tmpSecUnits;
+		tmpMin = tmpMinTens * 10 + tmpMinUnits + workingDelay + (tmpSec/60);
+		tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
+		tmpSec=tmpSec%60;
+		tmpSec=bcd2cnv(tmpSec);	
+		tmpMin=tmpMin%60;
+		tmpMin=bcd2cnv(tmpMin);
+		tmpHour=tmpHour%24;
+		tmpHour=bcd2cnv(tmpHour);
+		pendingRtcIrq[25] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // kapat
+		pendingRelay[25] = 1;
+	}
 
+	if( SELENOID_NUMBER  >= 2)    // NUMBERS OF SELENOID  >= 2
+	{
+		//röle 2
+		tmpSec = tmpSecTens *10 + tmpSecUnits + 2; 		// 2 sec delay
+		tmpMin = tmpMinTens * 10 + tmpMinUnits + workingDelay + (tmpSec/60);
+		tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
+		tmpSec=tmpSec%60;
+		tmpSec=bcd2cnv(tmpSec);	
+		tmpMin=tmpMin%60;
+		tmpMin=bcd2cnv(tmpMin);
+		tmpHour=tmpHour%24;
+		tmpHour=bcd2cnv(tmpHour);
+		pendingRtcIrq[26] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // 3 saniye sonrasina kurun	
+		pendingRelay[26] = 2;
+		tmpSec = tmpSecTens *10 + tmpSecUnits;
+		tmpMin = tmpMinTens * 10 + tmpMinUnits + 2*workingDelay + (tmpSec/60);
+		tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
+		tmpSec=tmpSec%60;
+		tmpSec=bcd2cnv(tmpSec);	
+		tmpMin=tmpMin%60;
+		tmpMin=bcd2cnv(tmpMin);
+		tmpHour=tmpHour%24;
+		tmpHour=bcd2cnv(tmpHour);
+		pendingRtcIrq[27] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // kapat
+		pendingRelay[27] = 2;
+	}
 
-	//röle 2
-	tmpSec = tmpSecTens *10 + tmpSecUnits + 2; 		// 2 sec delay
-	tmpMin = tmpMinTens * 10 + tmpMinUnits + workingDelay + (tmpSec/60);
-	tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
-	tmpSec=tmpSec%60;
-	tmpSec=bcd2cnv(tmpSec);	
-	tmpMin=tmpMin%60;
-	tmpMin=bcd2cnv(tmpMin);
-	tmpHour=tmpHour%24;
-	tmpHour=bcd2cnv(tmpHour);
-	pendingRtcIrq[26] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // 3 saniye sonrasina kurun	
-	pendingRelay[26] = 2;
-	tmpSec = tmpSecTens *10 + tmpSecUnits;
-	tmpMin = tmpMinTens * 10 + tmpMinUnits + 2*workingDelay + (tmpSec/60);
-	tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
-	tmpSec=tmpSec%60;
-	tmpSec=bcd2cnv(tmpSec);	
-	tmpMin=tmpMin%60;
-	tmpMin=bcd2cnv(tmpMin);
-	tmpHour=tmpHour%24;
-	tmpHour=bcd2cnv(tmpHour);
-	pendingRtcIrq[27] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // kapat
-	pendingRelay[27] = 2;
-	//röle 3
-	tmpSec = tmpSecTens *10 + tmpSecUnits + 2; 		// 2 sec delay
-	tmpMin = tmpMinTens * 10 + tmpMinUnits + 2*workingDelay + (tmpSec/60);
-	tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
-	tmpSec=tmpSec%60;
-	tmpSec=bcd2cnv(tmpSec);	
-	tmpMin=tmpMin%60;
-	tmpMin=bcd2cnv(tmpMin);
-	tmpHour=tmpHour%24;
-	tmpHour=bcd2cnv(tmpHour);	
-	pendingRtcIrq[28] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // 3 saniye sonrasina kurun	
-	pendingRelay[28] = 3;
-	tmpSec = tmpSecTens *10 + tmpSecUnits;
-	tmpMin = tmpMinTens * 10 + tmpMinUnits + 3*workingDelay + (tmpSec/60);
-	tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
-	tmpSec=tmpSec%60;
-	tmpSec=bcd2cnv(tmpSec);	
-	tmpMin=tmpMin%60;
-	tmpMin=bcd2cnv(tmpMin);
-	tmpHour=tmpHour%24;
-	tmpHour=bcd2cnv(tmpHour);
-	pendingRtcIrq[29] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // kapat
-	pendingRelay[29] = 3;
-	//röle 4
-	tmpSec = tmpSecTens *10 + tmpSecUnits + 2; 		// 2 sec delay
-	tmpMin = tmpMinTens * 10 + tmpMinUnits + 3*workingDelay + (tmpSec/60);
-	tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
-	tmpSec=tmpSec%60;
-	tmpSec=bcd2cnv(tmpSec);	
-	tmpMin=tmpMin%60;
-	tmpMin=bcd2cnv(tmpMin);
-	tmpHour=tmpHour%24;
-	tmpHour=bcd2cnv(tmpHour);	
-	pendingRtcIrq[30] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // 3 saniye sonrasina kurun	
-	pendingRelay[30] = 4;
-	tmpSec = tmpSecTens *10 + tmpSecUnits;
-	tmpMin = tmpMinTens * 10 + tmpMinUnits + 4*workingDelay + (tmpSec/60);
-	tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
-	tmpSec=tmpSec%60;
-	tmpSec=bcd2cnv(tmpSec);	
-	tmpMin=tmpMin%60;
-	tmpMin=bcd2cnv(tmpMin);
-	tmpHour=tmpHour%24;
-	tmpHour=bcd2cnv(tmpHour);
-	pendingRtcIrq[31] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // kapat
-	pendingRelay[31] = 4;
+	if( SELENOID_NUMBER  >= 3)    // NUMBERS OF SELENOID  >= 3
+	{
+		//röle 3
+		tmpSec = tmpSecTens *10 + tmpSecUnits + 2; 		// 2 sec delay
+		tmpMin = tmpMinTens * 10 + tmpMinUnits + 2*workingDelay + (tmpSec/60);
+		tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
+		tmpSec=tmpSec%60;
+		tmpSec=bcd2cnv(tmpSec);	
+		tmpMin=tmpMin%60;
+		tmpMin=bcd2cnv(tmpMin);
+		tmpHour=tmpHour%24;
+		tmpHour=bcd2cnv(tmpHour);	
+		pendingRtcIrq[28] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // 3 saniye sonrasina kurun	
+		pendingRelay[28] = 3;
+		tmpSec = tmpSecTens *10 + tmpSecUnits;
+		tmpMin = tmpMinTens * 10 + tmpMinUnits + 3*workingDelay + (tmpSec/60);
+		tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
+		tmpSec=tmpSec%60;
+		tmpSec=bcd2cnv(tmpSec);	
+		tmpMin=tmpMin%60;
+		tmpMin=bcd2cnv(tmpMin);
+		tmpHour=tmpHour%24;
+		tmpHour=bcd2cnv(tmpHour);
+		pendingRtcIrq[29] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // kapat
+		pendingRelay[29] = 3;
+	}	
+
+	if( SELENOID_NUMBER  >= 4)    // NUMBERS OF SELENOID  >= 4
+	{
+		//röle 4
+		tmpSec = tmpSecTens *10 + tmpSecUnits + 2; 		// 2 sec delay
+		tmpMin = tmpMinTens * 10 + tmpMinUnits + 3*workingDelay + (tmpSec/60);
+		tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
+		tmpSec=tmpSec%60;
+		tmpSec=bcd2cnv(tmpSec);	
+		tmpMin=tmpMin%60;
+		tmpMin=bcd2cnv(tmpMin);
+		tmpHour=tmpHour%24;
+		tmpHour=bcd2cnv(tmpHour);	
+		pendingRtcIrq[30] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // 3 saniye sonrasina kurun	
+		pendingRelay[30] = 4;
+		tmpSec = tmpSecTens *10 + tmpSecUnits;
+		tmpMin = tmpMinTens * 10 + tmpMinUnits + 4*workingDelay + (tmpSec/60);
+		tmpHour = tmpHourTens * 10 + tmpHourUnits + (tmpMin/60) ;
+		tmpSec=tmpSec%60;
+		tmpSec=bcd2cnv(tmpSec);	
+		tmpMin=tmpMin%60;
+		tmpMin=bcd2cnv(tmpMin);
+		tmpHour=tmpHour%24;
+		tmpHour=bcd2cnv(tmpHour);
+		pendingRtcIrq[31] = (0x80000000 |(tmpHour<<16) | (tmpMin<<8)  | (tmpSec)); // kapat
+		pendingRelay[31] = 4;
+	}	
 }
 
 /******************************************************************************/

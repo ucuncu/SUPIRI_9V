@@ -82,25 +82,45 @@ void hw_initSysclock(void) {
 	///* for VOS bits in PWR_CR */
 	PWR->CR = (PWR->CR & ~(PWR_CR_VOS)) | PWR_CR_VOS_0;  // 
   
-	/*!< Enable HSI READY interrupt */
-  //RCC->CIER |= RCC_CICR_HSIRDYC;
-	
-	//NVIC_SetPriority(RCC_CRS_IRQn, 0); /**/ 
-	//NVIC_EnableIRQ(RCC_CRS_IRQn); /*ENABLE BUTTON INTERRUPT*/ 
-	
-	/* Enable HSI divided by 1 in RCC-> CR */
-	//RCC->CR |= RCC_CR_HSION | RCC_CR_HSIKERON;
-	
-	
-	///* Wait for HSI ready flag and HSIDIV flag */
-	////while ((RCC->CR & RCC_CR_HSIRDY) != RCC_CR_HSIRDY) {}
-	
-////	/* Select HSI as system clock */
-////	RCC->CFGR |= RCC_CFGR_SW_HSI;
-
-////	/*  Wait for clock switched on PLL */
-////	while ((RCC->CFGR & RCC_CFGR_SW_HSI)  == 0) {}
 }
+
+
+
+//void hw_initSysclock(void) 
+//{
+//	/* Enable power interface clock */
+//	RCC->APB1ENR |= (RCC_APB1ENR_PWREN);
+
+//	/* Select voltage scale 1 (1.65V - 1.95V) i.e. (01) */
+//	/* for VOS bits in PWR_CR */
+//	PWR->CR = (PWR->CR & ~(PWR_CR_VOS)) | PWR_CR_VOS_0;  // 
+//	
+//  /* Enable HSI */	
+//	RCC->CR |= ((uint32_t)RCC_CR_HSION);
+//	
+//	/* Wait for HSI to be ready */
+//  while ((RCC->CR & RCC_CR_HSIRDY) == 0){
+//		// Nop
+//	}
+
+//	/* Set HSI as the System Clock */
+//  RCC->CFGR = RCC_CFGR_SW_HSI;
+//	
+
+//	/* Wait for HCI to become system core clock */
+//  while ((RCC->CFGR & RCC_CFGR_SW_HSI) != RCC_CFGR_SW_HSI){
+//		//Nop
+//	}
+//	
+//		/* USE HSI as the System Clock */
+//  RCC->CFGR |= RCC_CFGR_SWS_HSI;
+//	
+
+//	/* Wait for HCI to become system core clock */
+//  while ((RCC->CFGR & RCC_CFGR_SWS_HSI) != RCC_CFGR_SWS_HSI){
+//		//Nop
+//	}
+//}
 
 
 
@@ -115,7 +135,7 @@ void hw_init(void) {
 	RCC->APB2SMENR &= ~RCC_APB2SMENR_SYSCFGSMEN; /* (1) */
 	RCC->APB2SMENR &= ~RCC_APB2SMENR_TIM21SMEN; /* (1) */
 	RCC->APB2SMENR &= ~RCC_APB2SMENR_TIM22SMEN; /* (1) */
-	RCC->APB2SMENR &= ~RCC_APB2SMENR_ADC1SMEN; /* (1) */
+	//RCC->APB2SMENR &= ~RCC_APB2SMENR_ADC1SMEN; /* (1) */
 	RCC->APB2SMENR &= ~RCC_APB2SMENR_SPI1SMEN; /* (1) */
 	RCC->APB2SMENR &= ~RCC_APB2SMENR_USART1SMEN; /* (1) */
 	//RCC->APB2SMENR &= ~RCC_APB2SMENR_DBGMCUSMEN; /* (1) */
@@ -132,14 +152,14 @@ void hw_init(void) {
 	//
 	RCC->APB1SMENR = 0; /* (1) */	
 	//
-	RCC->IOPSMENR &= ~RCC_IOPSMENR_GPIOASMEN; /* (1) */	
+	//RCC->IOPSMENR &= ~RCC_IOPSMENR_GPIOASMEN; /* (1) */	
 	//RCC->IOPSMEN = &= ~RCC_IOPSMENR_GPIOBSMEN; /* (1) */	
-	RCC->IOPSMENR &= ~RCC_IOPSMENR_GPIOCSMEN; /* (1) */	
+	//RCC->IOPSMENR &= ~RCC_IOPSMENR_GPIOCSMEN; /* (1) */	
 	RCC->IOPSMENR &= ~RCC_IOPSMENR_GPIODSMEN; /* (1) */	
-	RCC->IOPSMENR &= ~RCC_IOPSMENR_GPIOHSMEN; /* (1) */		
+	//RCC->IOPSMENR &= ~RCC_IOPSMENR_GPIOHSMEN; /* (1) */		
 
 	//RCC->AHBENR &= ~RCC_AHBENR_MIFEN; /* (1) */			
-	
+
 	//	
 	I2C_Init();
 	asm("nop");
@@ -175,9 +195,21 @@ void hw_init(void) {
 	button_init();
 	adc_con_pins_init();
 	//	
-	SetClockForADC();
+	SetClockForADC();	
+	asm("nop");
+	asm("nop");	
+	asm("nop");
+	asm("nop");	
 	ConfigureADC();
-	//CalibrateADC(); 
+	asm("nop");
+	asm("nop");	
+	asm("nop");
+	asm("nop");
+	CalibrateADC(); 
+	asm("nop");
+	asm("nop");	
+	asm("nop");
+	asm("nop");
 	EnableADC(); 
 	//ADC1->CR |= ADC_CR_ADSTART; /* start the ADC conversion */	
 	//	
@@ -209,7 +241,11 @@ void arrangeGPIOforSleep(void)
                             GPIO_SPEED_MEDIUM,
                             GPIO_PULL_NON
                            };
-													 
+			GpioInit_t tGpioADCPinInit = {GPIO_MODE_OUTPUT,
+                            GPIO_OUTPUT_OPEN_DRAIN,
+                            GPIO_SPEED_MEDIUM,
+                            GPIO_PULL_DOWN
+                           };						 
 													 
     /* Enable the peripheral clocks */
     RCC->IOPENR |= RCC_IOPENR_GPIOAEN;
@@ -220,7 +256,7 @@ void arrangeGPIOforSleep(void)
     //gpio_init(GPIOA, 0, &tGpioAnalogInit);										 
 													 
 		/* Select OUTPUT mode (00) on GPIOA pin 1 */
-    gpio_init(GPIOA, 1, &tGpioInit);
+    gpio_init(GPIOA, 1, &tGpioADCPinInit);
 		gpio_clear(GPIOA, 1);											 
 													 
     /* Select OUTPUT mode (00) on GPIOA pin 2 */

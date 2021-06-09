@@ -14,6 +14,8 @@ extern "C" {
 #include "stm32l0xx.h"
 
 /****** Macros ****************************************************************/
+#define SELENOID_NUMBER  4    // NUMBERS OF SELENOID  1,2,3,4 available
+
 
 /****** Function prototypes ****************************************************/
 extern void button_init(void);

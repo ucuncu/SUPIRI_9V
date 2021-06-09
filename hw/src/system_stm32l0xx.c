@@ -124,7 +124,7 @@
                is no need to call the 2 first functions listed above, since SystemCoreClock
                variable is updated automatically.
   */
-  uint32_t SystemCoreClock = 2000000U;
+  uint32_t SystemCoreClock = 20000000U;
   const uint8_t AHBPrescTable[16] = {0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U, 6U, 7U, 8U, 9U};
   const uint8_t APBPrescTable[8] = {0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U};
   const uint8_t PLLMulTable[9] = {3U, 4U, 6U, 8U, 12U, 16U, 24U, 32U, 48U};
@@ -159,8 +159,7 @@ void SystemInit (void)
   RCC->CFGR &= (uint32_t) 0x88FF400CU;
  
   /*!< Reset HSION, HSIDIVEN, HSEON, CSSON and PLLON bits */
-  RCC->CR &= (uint32_t)0xFEF6FFFFU;   //1111 1110 1111 0110 1111 1111 1111 0110
-  
+  RCC->CR &= (uint32_t)0xFEF6FFF6U;
   /*!< Reset HSI48ON  bit */
   RCC->CRRCR &= (uint32_t)0xFFFFFFFEU;
   

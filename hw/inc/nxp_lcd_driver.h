@@ -15,7 +15,7 @@
 #define LCD_A1 0x70  /* H4198 displays (up to 3, with NXP PCF85176 ICs */
 #define LCD_A2 0x72  /* H4235's two sub-displays (2 NXP PCF85134 ICs */
 
-#define timeOutVal 1000000
+#define timeOutVal 10000
 
 // Initialize the pic's I2C interface, and the NXP LCD control ICs.
 void nxpInit(void);

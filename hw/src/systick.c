@@ -28,6 +28,7 @@
 #include "systick.h"
 #include "nxp_lcd_driver.h"
 #include "selenoid.h"
+#include "button.h"
 
 int f1ms = 0;
 int f2ms = 0;
@@ -270,36 +271,57 @@ if(fOpenRelay_4_WithDelay)
 			}
 			else if(cntPowerOn4second>=1600)
 			{
-				if(cntPowerOn4second==1600)
+				if (SELENOID_NUMBER == 1)
 				{
-					fCloseRelay2 = 1;
+					cntPowerOn4second = 0; 
 				}
-				fPowerOnRelay1OFF = 0;
-				fPowerOnRelay2OFF = 1;
-				fPowerOnRelay3OFF = 0;
-				fPowerOnRelay4OFF = 0;
+				else
+				{
+					if(cntPowerOn4second==1600)
+					{
+						fCloseRelay2 = 1;
+					}
+					fPowerOnRelay1OFF = 0;
+					fPowerOnRelay2OFF = 1;
+					fPowerOnRelay3OFF = 0;
+					fPowerOnRelay4OFF = 0;
+				}
 			}
 			else if(cntPowerOn4second>=800)
 			{
-				if(cntPowerOn4second==800)
+				if (SELENOID_NUMBER == 2)
 				{
-					fCloseRelay3 = 1;
+					cntPowerOn4second = 0; 
 				}
-				fPowerOnRelay1OFF = 0;
-				fPowerOnRelay2OFF = 0;
-				fPowerOnRelay3OFF = 1;
-				fPowerOnRelay4OFF = 0;
+				else
+				{
+					if(cntPowerOn4second==800)
+					{
+						fCloseRelay3 = 1;
+					}
+					fPowerOnRelay1OFF = 0;
+					fPowerOnRelay2OFF = 0;
+					fPowerOnRelay3OFF = 1;
+					fPowerOnRelay4OFF = 0;
+				}
 			}
 			else
 			{
-				if(cntPowerOn4second==0)
+				if (SELENOID_NUMBER == 3)
 				{
-					fCloseRelay4 = 1;
+					cntPowerOn4second = 0; 
 				}
-				fPowerOnRelay1OFF = 0;
-				fPowerOnRelay2OFF = 0;
-				fPowerOnRelay3OFF = 0;
-				fPowerOnRelay4OFF = 1;
+				else
+				{
+					if(cntPowerOn4second==0)
+					{
+						fCloseRelay4 = 1;
+					}
+					fPowerOnRelay1OFF = 0;
+					fPowerOnRelay2OFF = 0;
+					fPowerOnRelay3OFF = 0;
+					fPowerOnRelay4OFF = 1;
+				}
 			}
 		}
 		else

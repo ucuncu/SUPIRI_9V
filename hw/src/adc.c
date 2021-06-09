@@ -90,7 +90,8 @@ __INLINE void  CalibrateADC(void)
   /* (5) Clear EOCAL */
   if ((ADC1->CR & ADC_CR_ADEN) != 0) /* (1) */
   {
-    ADC1->CR &= (uint32_t)(~ADC_CR_ADEN);  /* (2) */  
+    //ADC1->CR &= (uint32_t)(~ADC_CR_ADEN);  /* (2) */  
+		ADC1->CR |= ADC_CR_ADDIS; /* (2) */
   }
   ADC1->CR |= ADC_CR_ADCAL; /* (3) */
 	long unsigned int timeOut = 0;
@@ -115,18 +116,18 @@ __INLINE void  CalibrateADC(void)
   */
 __INLINE void ConfigureADC(void)
 {
-  /* (1) Select HSI16 by writing 00 in CKMODE (reset value) */ 
-  /* (2) Select the auto off mode */
-  /* (3) Select CHSEL17 for VRefInt */
-  /* (4) Select a sampling mode of 111 i.e. 239.5 ADC clk to be greater than 17.1us */
-  /* (5) Wake-up the VREFINT (only for VLCD, Temp sensor and VRefInt) , low freq */
-  ADC1->CFGR2 &= ~ADC_CFGR2_CKMODE; /* (1) */  
-	ADC1->CFGR2 |= ADC_CFGR2_CKMODE_0; /* (1) */	
-  ADC1->CFGR1 |= ADC_CFGR1_AUTOFF; /* (2) */
-  ADC1->CHSELR = ADC_CHSELR_CHSEL0; /* (3) */
-  ADC1->SMPR |= ADC_SMPR_SMP_0 | ADC_SMPR_SMP_1 | ADC_SMPR_SMP_2; /* (4) */
-  ADC->CCR |= ADC_CCR_VREFEN | ADC_CCR_LFMEN; /* (5) */
-	
+	/* (1) Enable low freq */
+  /* (2) Select PCKL */ 
+  /* (3) Select the autooff mode */
+  /* (4) Select CHSEL0 */
+  /* (5) Select a sampling mode of 111 i.e. 239.5 ADC clk to be greater than 17.1us */
+
+	ADC->CCR |= ADC_CCR_LFMEN; /* (1) */
+  ADC1->CFGR2 &= ~ADC_CFGR2_CKMODE; /* (2) */  
+	ADC1->CFGR2 |= ADC_CFGR2_CKMODE_0; /* 2) */
+  ADC1->CFGR1 |= ADC_CFGR1_AUTOFF; /* (3) */
+  ADC1->CHSELR = ADC_CHSELR_CHSEL0; /* (4) */
+  ADC1->SMPR |= ADC_SMPR_SMP_0 | ADC_SMPR_SMP_1 | ADC_SMPR_SMP_2; /* (5) */	
 }
 
 
@@ -151,9 +152,10 @@ __INLINE void EnableADC(void)
 			if(timeOut>timeOutVal)
 			{
 				break;
-		}
+			}
     }
   }
+	ADC1->CR |= ADC_CR_ADVREGEN;
 }
 
 /**
@@ -168,11 +170,14 @@ __INLINE void DisableADC(void)
   /* (3) Wait until ADSTP is reset by hardware i.e. conversion is stopped */
   /* (4) Disable the ADC */
   /* (5) Wait until the ADC is fully disabled */
+	long unsigned int timeOut = 0;	
+	long unsigned int timeOut2 = 0;	
+	
   if ((ADC1->CR & ADC_CR_ADSTART) != 0) /* (1) */
   {
     ADC1->CR |= ADC_CR_ADSTP; /* (2) */
   }
-	long unsigned int timeOut = 0;	
+	
   while ((ADC1->CR & ADC_CR_ADSTP) != 0)  /* (3) */
   {
      /* For robust implementation, add here time-out management */
@@ -183,7 +188,7 @@ __INLINE void DisableADC(void)
 		}
   }
   ADC1->CR |= ADC_CR_ADDIS; /* (4) */
-	long timeOut2 = 0;	
+	
   while ((ADC1->CR & ADC_CR_ADEN) != 0) /* (5) */
   {
     /* For robust implementation, add here time-out management */
@@ -192,6 +197,7 @@ __INLINE void DisableADC(void)
 		{
 			break;
 		}
-  }  
+  } 
+	ADC1->CR &= ~ADC_CR_ADVREGEN;
 }
 
